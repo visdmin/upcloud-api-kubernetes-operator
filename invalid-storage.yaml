@@ -1,0 +1,13 @@
+---
+apiVersion: storage.upcloud.com/v1alpha1
+kind: Storage
+metadata:
+  name: invalid-storage
+spec:
+  title: storage-device-created-using-k8s-operator1233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333storage-device-created-using-k8s-operator1233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+  size: 30
+  tier: maxiops
+  zone: fi-hel2
+  labels:
+    - name: "foo"
+      value: "foo-value"
