@@ -60,7 +60,7 @@ public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStora
 
         [Length(MaxLength = 36, MinLength = -1)]
         [Description("Network uuid")]
-        public string Id { get; set; } = string.Empty;
+        public string? Id { get; set; } = null;
     }
 
     [Description("Cloud API user that has access to the object storage instance")]
@@ -83,6 +83,9 @@ public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStora
 
     public class V1Alpha1ObjectStorageStatus
     {
+        [Description("Entity reconcile status")]
+        public ReconcileState ReconcileState { get; set; } = ReconcileState.UPDATING;
+
         [Description("Object storage instance uuid")]
         public string Id { get; set; } = string.Empty;
 
@@ -109,6 +112,14 @@ public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStora
 
         [Description("List of cloud API users configured to have access to the object storage instance")]
         public Collection<ConnectedUser> Users { get; set; } = new ();
+    }
+
+    public enum ReconcileState
+    {
+        PAUSED     = 0,
+        UP_TO_DATE = 1,
+        UPDATING   = 2,
+        FAILURE    = 3,
     }
 
     [Description("Object storage instance endpoint")]
