@@ -1,9 +1,15 @@
 using KubeOps.Operator;
+using UpcloudApiKubernetesOperator.Entities;
+using UpcloudApiKubernetesOperator.UpCloudApi.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddKubernetesOperator();
-builder.Services.AddControllers();
-builder.Services.AddHttpClient();
+
+builder.Host.ConfigureServices((context, services) => {
+    services.AddUpCloudApiClient(context.Configuration);
+    services.AddKubernetesOperator();
+    services.AddControllers();
+
+});
 
 var app = builder.Build();
 
