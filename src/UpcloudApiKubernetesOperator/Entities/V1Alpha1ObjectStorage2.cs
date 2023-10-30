@@ -9,6 +9,15 @@ namespace UpcloudApiKubernetesOperator.Entities;
 [KubernetesEntity(Group = "api.upcloud.com", ApiVersion = "v1alpha1", Kind = "ObjectStorage2")]
 public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStorage2.V1Alpha1ObjectStorageSpec, V1Alpha1ObjectStorage2.V1Alpha1ObjectStorageStatus>
 {
+    public const string KubeApiVersion = "api.upcloud.com/v1alpha1";
+    public const string KubeKind = "ObjectStorage2";
+
+    public V1Alpha1ObjectStorage2()
+    {
+        ApiVersion = KubeApiVersion;
+        Kind       = KubeKind;
+    }
+
     [Description("Specification for UpCloud router entity: https://developers.upcloud.com/1.3/13-networks/#create-router")]
     public class V1Alpha1ObjectStorageSpec
     {
@@ -83,12 +92,15 @@ public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStora
 
     public class V1Alpha1ObjectStorageStatus
     {
+        [AdditionalPrinterColumn]
         [Description("Entity reconcile status")]
         public ReconcileState ReconcileState { get; set; } = ReconcileState.UPDATING;
 
+        [AdditionalPrinterColumn]
         [Description("Object storage instance uuid")]
         public string Id { get; set; } = string.Empty;
 
+        [AdditionalPrinterColumn]
         [Description("Configured service status, see: https://developers.upcloud.com/1.3/21-managed-object-storage/#service-configured-status")]
         public string ConfiguredStatus { get; set; } = string.Empty;
 
@@ -101,12 +113,15 @@ public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStora
         [Description("List of attached networks that can be used to access the instance")]
         public Collection<Network> Networks { get; set; } = new ();
 
+        [AdditionalPrinterColumn]
         [Description("Current operational state of the object storage instance")]
         public string OperationalState { get; set; } = string.Empty;
 
+        [AdditionalPrinterColumn]
         [Description("Region where the object storage instance is running")]
         public string Region { get; set; } = string.Empty;
 
+        [AdditionalPrinterColumn]
         [Description("Object storage instance last updated time")]
         public string UpdatedAt { get; set; } = string.Empty;
 

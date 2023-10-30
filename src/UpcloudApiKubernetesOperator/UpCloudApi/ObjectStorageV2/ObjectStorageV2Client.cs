@@ -10,6 +10,23 @@ internal sealed class ObjectStorageV2Client : UpCloudApiClient, IObjectStorageV2
 {
     public ObjectStorageV2Client(IHttpClientFactory httpClientFactory, ILogger<UpCloudApiClient> logger) : base(httpClientFactory, logger) { }
 
+    public async Task<IReadOnlyCollection<InstanceDetailsResponse>> ListInstances(CancellationToken cancellationToken = default)
+    {
+        try {
+            var response = await HttpClient.GetFromJsonAsync<InstanceDetailsResponse[]>(
+                requestUri:        "/1.3/object-storage-2",
+                options:           JsonSerializerOptions,
+                cancellationToken: cancellationToken
+            );
+
+            return new ReadOnlyCollection<InstanceDetailsResponse>(response ?? Array.Empty<InstanceDetailsResponse>());
+        }
+        catch (Exception ex) {
+            Logger.LogError(ex, "Requesting object storage v2 instance list from upc api failed");
+            return new ReadOnlyCollection<InstanceDetailsResponse>(Array.Empty<InstanceDetailsResponse>());
+        }
+    }
+
     public async Task<InstanceDetailsResponse?> GetDetails(string instanceUuid, CancellationToken cancellationToken = default)
     {
         try {

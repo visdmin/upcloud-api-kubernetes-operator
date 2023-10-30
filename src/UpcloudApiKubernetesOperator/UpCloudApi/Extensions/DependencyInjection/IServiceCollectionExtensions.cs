@@ -10,21 +10,20 @@ public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddUpCloudApiClient(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<UpCloudApiOptions>(
-            config: configuration.GetRequiredSection(key: UpCloudApiOptions.DEFAULT_SECTION_NAME)
-        );
+        services
+            .Configure<UpCloudApiOptions>(config: configuration.GetRequiredSection(key: UpCloudApiOptions.DEFAULT_SECTION_NAME))
+            .AddSingleton<IValidateOptions<UpCloudApiOptions>, UpCloudApiOptions.Validator>()
+            .AddHttpClient<UpCloudApiClient>((serviceProvider, httpClient) => {
+                var apiConfiguration = serviceProvider.GetRequiredService<IOptions<UpCloudApiOptions>>().Value;
 
-        services.AddHttpClient<UpCloudApiClient>((serviceProvider, httpClient) => {
-            var apiConfiguration = serviceProvider.GetRequiredService<IOptions<UpCloudApiOptions>>().Value;
+                httpClient.Timeout     = TimeSpan.FromSeconds(apiConfiguration.RequestTimeoutSeconds);
+                httpClient.BaseAddress = new Uri(apiConfiguration.Endpoint);
 
-            httpClient.Timeout     = TimeSpan.FromSeconds(apiConfiguration.RequestTimeoutSeconds);
-            httpClient.BaseAddress = new Uri(apiConfiguration.Endpoint);
-
-            httpClient.SetBasicAuthentication(
-                userName: apiConfiguration.Username,
-                password: apiConfiguration.Password
-            );
-        });
+                httpClient.SetBasicAuthentication(
+                    userName: apiConfiguration.Username,
+                    password: apiConfiguration.Password
+                );
+            });
 
         services.AddSingleton<IObjectStorageV2Client, ObjectStorageV2Client>();
 
