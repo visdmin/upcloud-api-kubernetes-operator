@@ -11,7 +11,7 @@ Always refer to the official UpCloud documentation and support channels for auth
 - [ ] Implement UpCloud API objects as custom resource types.
 - [ ] To keep up with UpCloud API object states by pulling changes from the UpCloud API.
 - [ ] To be able to display the current UpCloud API object states via Kubernetes API. 
-- [ ] To be able to maintain the desired state of the UpCloud API objects.
+- [ ] To be able to maintain the desired state of the UpCloud API objects (manipulate UpCloud API objects via K8s entity spec).
 
 These features can be implemented one by one, and the features can be implemented only for selected UpCloud API objects.
 
