@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using UpcloudApiKubernetesOperator.UpCloudApi.ObjectStorageV2.Models.Responses;
 using UpcloudApiKubernetesOperator.UpCloudApi.ObjectStorageV2.Models.Requests;
 using k8s.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 
 namespace UpcloudApiKubernetesOperator.UpCloudApi.ObjectStorageV2;
 
@@ -74,7 +75,7 @@ internal sealed class ObjectStorageV2Client : UpCloudApiClient, IObjectStorageV2
             }
 
             return new (
-                success:       true,
+                success:       false,
                 errorResponse: await response.Content.ReadFromJsonAsync<ErrorResponse>(
                     options: JsonSerializerOptions,
                     cancellationToken: cancellationToken
@@ -102,7 +103,7 @@ internal sealed class ObjectStorageV2Client : UpCloudApiClient, IObjectStorageV2
             }
 
             return new (
-                success:       true,
+                success:       false,
                 errorResponse: await response.Content.ReadFromJsonAsync<ErrorResponse>(
                     options: JsonSerializerOptions,
                     cancellationToken: cancellationToken
@@ -128,7 +129,7 @@ internal sealed class ObjectStorageV2Client : UpCloudApiClient, IObjectStorageV2
             }
 
             return new (
-                success:       true,
+                success:       false,
                 errorResponse: await response.Content.ReadFromJsonAsync<ErrorResponse>(
                     options: JsonSerializerOptions,
                     cancellationToken: cancellationToken
@@ -138,6 +139,39 @@ internal sealed class ObjectStorageV2Client : UpCloudApiClient, IObjectStorageV2
         catch (Exception ex) {
             Logger.LogError(ex, "Delete new object storage 2 instance request failed");
             return new (success: false, errorResponse: null);
+        }
+    }
+
+    public async Task<CreateAccessKeyResponse> CreateAccessKey(string instanceUuid, string username, AccessKeyDetails details, CancellationToken cancellationToken = default)
+    {
+        try {
+            var response = await HttpClient.PostAsJsonAsync(
+                requestUri:        string.Format("/1.3/object-storage-2/{0}/users/{1}/access-keys", instanceUuid, username),
+                value:             details,
+                cancellationToken: cancellationToken
+            );
+
+            if (response.IsSuccessStatusCode) {
+                return new (
+                    success: true,
+                    details: await response.Content.ReadFromJsonAsync<NewAccessKeyDetails>(
+                        options:           JsonSerializerOptions,
+                        cancellationToken: cancellationToken
+                    )
+                );
+            }
+
+            return new (
+                success:       false,
+                errorResponse: await response.Content.ReadFromJsonAsync<ErrorResponse>(
+                    options: JsonSerializerOptions,
+                    cancellationToken: cancellationToken
+                )
+            );
+        }
+        catch (Exception ex) {
+            Logger.LogError(ex, "Delete new object storage 2 instance request failed");
+            return new (success: false);
         }
     }
 }

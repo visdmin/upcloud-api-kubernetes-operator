@@ -10,7 +10,7 @@ namespace UpcloudApiKubernetesOperator.Entities;
 public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStorage2.V1Alpha1ObjectStorageSpec, V1Alpha1ObjectStorage2.V1Alpha1ObjectStorageStatus>
 {
     public const string KubeApiVersion = "api.upcloud.com/v1alpha1";
-    public const string KubeKind = "ObjectStorage2";
+    public const string KubeKind       = "ObjectStorage2";
 
     public V1Alpha1ObjectStorage2()
     {
@@ -18,7 +18,7 @@ public class V1Alpha1ObjectStorage2 : CustomKubernetesEntity<V1Alpha1ObjectStora
         Kind       = KubeKind;
     }
 
-    [Description("Specification for UpCloud router entity: https://developers.upcloud.com/1.3/13-networks/#create-router")]
+    [Description("Specification for UpCloud object storage v2 entity: https://developers.upcloud.com/1.3/21-managed-object-storage/#create-service")]
     public class V1Alpha1ObjectStorageSpec
     {
         [Length(MaxLength = 36, MinLength = -1)]
