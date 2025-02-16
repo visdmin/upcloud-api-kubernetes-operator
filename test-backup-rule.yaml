@@ -1,9 +1,0 @@
----
-apiVersion: storage.upcloud.com/v1alpha1
-kind: BackupRule
-metadata:
-  name: test-backup-rule
-spec:
-  interval: daily
-  retention: 14
-  time: "0200"
