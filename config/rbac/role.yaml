@@ -1,0 +1,38 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - upcloud.visdmin.com
+  resources:
+  - accounts
+  - servers
+  - simpleplans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - upcloud.visdmin.com
+  resources:
+  - accounts/finalizers
+  - servers/finalizers
+  - simpleplans/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - upcloud.visdmin.com
+  resources:
+  - accounts/status
+  - servers/status
+  - simpleplans/status
+  verbs:
+  - get
+  - patch
+  - update

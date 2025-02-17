@@ -1,0 +1,23 @@
+# permissions for end users to view accounts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: upcloud-api-kubernetes-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: account-viewer-role
+rules:
+- apiGroups:
+  - upcloud.visdmin.com
+  resources:
+  - accounts
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - upcloud.visdmin.com
+  resources:
+  - accounts/status
+  verbs:
+  - get
