@@ -23,22 +23,25 @@ import (
 
 // AccountSpec defines the desired state of Account
 type AccountSpec struct {
-	Name                   string             `json:"name,omitempty"`
 	ApiCredentialSecretRef v1.SecretReference `json:"apiCredentialSecret,omitempty"`
 }
 
 // AccountStatus defines the observed state of Account
 type AccountStatus struct {
-	Name     string `json:"name,omitempty"`
-	Status   string `json:"ready,omitempty"`
+	Status   string `json:"status,omitempty"`
 	UserName string `json:"username,omitempty"`
 	Credits  string `json:"credits,omitempty"`
 }
 
+// Account is the Schema for the accounts API
+// +k8s:openapi-gen=true
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-
-// Account is the Schema for the accounts API
+// +kubebuilder:resource:shortName=acc
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".status.status",description="Account readiness"
+// +kubebuilder:printcolumn:name="Username",type="string",JSONPath=".status.username",description="Account username"
+// +kubebuilder:printcolumn:name="Credits",type="string",JSONPath=".status.credits",description="Account credits"
 type Account struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -47,9 +50,8 @@ type Account struct {
 	Status AccountStatus `json:"status,omitempty"`
 }
 
-// +kubebuilder:object:root=true
-
 // AccountList contains a list of Account
+// +kubebuilder:object:root=true
 type AccountList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`

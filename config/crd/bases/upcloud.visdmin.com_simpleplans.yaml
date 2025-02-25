@@ -11,10 +11,45 @@ spec:
     kind: SimplePlan
     listKind: SimplePlanList
     plural: simpleplans
+    shortNames:
+    - plan
     singular: simpleplan
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - additionalPrinterColumns:
+    - description: Server plan status
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - description: Server plan CPU core number
+      jsonPath: .spec.account_ref
+      name: Account
+      type: string
+    - description: Server plan CPU core number
+      jsonPath: .spec.plan_name
+      name: PlanName
+      type: string
+    - description: Server plan CPU core number
+      jsonPath: .status.core_number
+      name: CoreNumber
+      type: string
+    - description: Server plan memory amount
+      jsonPath: .status.memory_amount
+      name: MemoryAmount
+      type: string
+    - description: Server plan public traffic out
+      jsonPath: .status.public_traffic_out
+      name: PublicTrafficOut
+      type: string
+    - description: Server plan storage size
+      jsonPath: .status.storage_size
+      name: StorageSize
+      type: string
+    - description: Server plan storage tier
+      jsonPath: .status.storage_tier
+      name: StorageTier
+      type: string
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: SimplePlan is the Schema for the simpleplans API
@@ -39,17 +74,51 @@ spec:
           spec:
             description: SimplePlanSpec defines the desired state of SimplePlan
             properties:
-              core_number:
-                type: integer
-              memory_amount:
-                type: integer
-              name:
-                type: string
-              public_traffic_out:
-                type: integer
-              storage_size:
-                type: integer
-              storage_tier:
+              account_ref:
+                description: ObjectReference contains enough information to let you
+                  inspect or modify the referred object.
+                properties:
+                  apiVersion:
+                    description: API version of the referent.
+                    type: string
+                  fieldPath:
+                    description: |-
+                      If referring to a piece of an object instead of an entire object, this string
+                      should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2].
+                      For example, if the object reference is to a container within a pod, this would take on a value like:
+                      "spec.containers{name}" (where "name" refers to the name of the container that triggered
+                      the event) or if no container name is specified "spec.containers[2]" (container with
+                      index 2 in this pod). This syntax is chosen only to have some well-defined way of
+                      referencing a part of an object.
+                    type: string
+                  kind:
+                    description: |-
+                      Kind of the referent.
+                      More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                    type: string
+                  name:
+                    description: |-
+                      Name of the referent.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    type: string
+                  namespace:
+                    description: |-
+                      Namespace of the referent.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                    type: string
+                  resourceVersion:
+                    description: |-
+                      Specific resourceVersion to which this reference is made, if any.
+                      More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency
+                    type: string
+                  uid:
+                    description: |-
+                      UID of the referent.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids
+                    type: string
+                type: object
+                x-kubernetes-map-type: atomic
+              plan_name:
                 type: string
             type: object
           status:
@@ -59,10 +128,10 @@ spec:
                 type: integer
               memory_amount:
                 type: integer
-              name:
-                type: string
               public_traffic_out:
                 type: integer
+              status:
+                type: string
               storage_size:
                 type: integer
               storage_tier:

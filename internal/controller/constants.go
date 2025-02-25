@@ -5,5 +5,7 @@ import (
 )
 
 const (
-	timeoutGetRequest time.Duration = time.Second * 10
+	simplePlanReconcileInterval time.Duration = time.Second * 10
+	accountReconcileInterval    time.Duration = time.Second * 10
+	timeoutGetRequest           time.Duration = time.Second * 10
 )
